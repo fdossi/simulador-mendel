@@ -18,7 +18,7 @@
     "productName": "Simulador da Primeira Lei de Mendel",
     "files": [
       "main.js",
-      "app/**/*",
+      "index.html",
       "package.json"
     ],
     "win": {
