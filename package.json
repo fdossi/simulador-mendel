@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder --win nsis portable"
+    "dist": "electron-builder --win nsis portable --publish never"
   },
   "devDependencies": {
     "electron": "^35.7.5",
@@ -22,14 +22,17 @@
       "package.json"
     ],
     "win": {
-      "target": ["nsis", "portable"],
-      "artifactName": "Simulador-Mendel-${version}-${arch}.${ext}"
+      "target": ["nsis", "portable"]
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
-      "createStartMenuShortcut": true
+      "createStartMenuShortcut": true,
+      "artifactName": "Simulador-Mendel-Instalador-${version}-${arch}.${ext}"
+    },
+    "portable": {
+      "artifactName": "Simulador-Mendel-Portatil-${version}-${arch}.${ext}"
     }
   }
 }
