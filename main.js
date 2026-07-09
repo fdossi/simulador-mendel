@@ -19,7 +19,7 @@ function createWindow() {
     }
   });
 
-  win.loadFile(path.join(__dirname, 'app', 'index.html'));
+  win.loadFile(path.join(__dirname, 'index.html'));
   win.once('ready-to-show', () => {
     win.show();
     win.maximize();
