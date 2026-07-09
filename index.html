@@ -20,7 +20,7 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,A
 button{font:inherit}
 .app{height:100vh;height:100dvh;display:grid;grid-template-rows:auto auto minmax(0,1fr);gap:8px;padding:10px;max-width:1600px;margin:auto}
 .header{min-height:68px;background:linear-gradient(125deg,var(--azul-900),var(--azul-700));border-radius:var(--radius);padding:9px 14px;color:white;display:flex;align-items:center;justify-content:space-between;gap:14px;box-shadow:var(--shadow)}
-.brand{display:flex;align-items:center;gap:11px;min-width:0}.corn-logo{width:46px;height:46px;flex:0 0 auto;filter:drop-shadow(0 3px 4px rgba(0,0,0,.22))}.title-wrap{min-width:0}.title-wrap h1{font-size:clamp(1.12rem,2vw,1.72rem);line-height:1.05;margin:0;font-weight:850;letter-spacing:-.025em}.title-wrap p{margin:5px 0 0;color:#dbeafe;font-size:clamp(.72rem,1vw,.91rem);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cross-badge{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:7px 11px;white-space:nowrap}.cross-badge strong{font-size:1.04rem}.cross-badge span{font-size:.72rem;color:#e0f2fe;display:block}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}.corn-logo{width:46px;height:46px;flex:0 0 auto;filter:drop-shadow(0 3px 4px rgba(0,0,0,.22))}.title-wrap{min-width:0}.title-wrap h1{font-size:clamp(1.12rem,2vw,1.72rem);line-height:1.05;margin:0;font-weight:850;letter-spacing:-.025em}.title-wrap p{margin:5px 0 0;color:#dbeafe;font-size:clamp(.72rem,1vw,.91rem);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cross-badge{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:7px 11px;white-space:nowrap}.cross-badge strong{font-size:1.04rem}.cross-badge span{font-size:.72rem;color:#e0f2fe;display:block}.cross-select-wrap{display:flex;align-items:center;gap:8px}.cross-select-wrap label{font-size:.68rem;color:#bae6fd;font-weight:800;text-transform:uppercase;letter-spacing:.05em}.cross-select{appearance:none;border:1px solid rgba(255,255,255,.38);background:rgba(255,255,255,.16);color:#fff;border-radius:9px;padding:7px 30px 7px 10px;font-weight:900;font-size:.95rem;cursor:pointer;background-image:linear-gradient(45deg,transparent 50%,#fff 50%),linear-gradient(135deg,#fff 50%,transparent 50%);background-position:calc(100% - 14px) 50%,calc(100% - 9px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}.cross-select option{color:#0f172a;background:#fff}.cross-select:focus-visible{outline:3px solid var(--amarelo-400);outline-offset:2px}
 .toolbar{background:white;border-radius:var(--radius);padding:8px 10px;display:grid;grid-template-columns:minmax(290px,1.35fr) auto minmax(315px,1fr);align-items:center;gap:10px;box-shadow:0 4px 16px rgba(15,23,42,.07)}
 .concept{font-size:clamp(.68rem,.86vw,.8rem);line-height:1.32;color:var(--slate-600);border-left:4px solid var(--amarelo-400);padding-left:9px}.concept strong{color:var(--azul-900)}
 .controls{display:flex;gap:7px;justify-content:center}.btn{border:0;border-radius:10px;padding:9px 12px;color:white;font-weight:800;font-size:clamp(.7rem,.86vw,.82rem);cursor:pointer;box-shadow:0 4px 10px rgba(15,23,42,.14);transition:transform .15s ease,filter .15s ease}.btn:hover{filter:brightness(1.07);transform:translateY(-1px)}.btn:focus-visible{outline:3px solid var(--amarelo-400);outline-offset:2px}.btn-blue{background:var(--azul-700)}.btn-yellow{background:var(--amarelo-500);color:#422006}.btn.active{box-shadow:0 0 0 3px rgba(250,204,21,.55),0 4px 10px rgba(15,23,42,.16)}
@@ -49,7 +49,10 @@ button{font:inherit}
       </svg>
       <div class="title-wrap"><h1>Simulador da 1ª Lei de Mendel</h1><p>Modelo simplificado: herança da cor dos grãos em milho hipotético</p></div>
     </div>
-    <div class="cross-badge"><div><span>Indivíduos cruzados da geração F1</span><strong>Rr × Rr</strong></div><div aria-hidden="true">→</div><div><span>Descendência analisada</span><strong>Geração F2</strong></div></div>
+    <div class="cross-badge">
+      <div class="cross-select-wrap"><label for="crossSelect">Cruzamento</label><select id="crossSelect" class="cross-select" aria-label="Selecionar cruzamento parental"><option value="Rr-Rr" selected>Rr × Rr</option><option value="RR-rr">RR × rr</option><option value="RR-RR">RR × RR</option><option value="rr-rr">rr × rr</option></select></div>
+      <div aria-hidden="true">→</div><div><span id="generationLabel">Híbridos F1 cruzados</span><strong id="offspringLabel">Geração F2</strong></div>
+    </div>
   </header>
 
   <section class="toolbar" aria-label="Conceito, controles e legenda">
@@ -69,12 +72,12 @@ button{font:inherit}
 
     <aside class="panel results" aria-label="Resultados estatísticos">
       <section class="stat-card">
-        <div class="stat-title"><h3>Frequência genotípica</h3><span class="expected-pill">Esperado: 1 RR : 2 Rr : 1 rr</span></div>
+        <div class="stat-title"><h3>Frequência genotípica</h3><span id="genExpected" class="expected-pill">Esperado: 1 RR : 2 Rr : 1 rr</span></div>
         <div class="ratio-display"><div class="ratio-label">Frequência normalizada<br><span style="font-size:.86em;font-weight:700;letter-spacing:.02em">(contagens entre parênteses)</span></div><div id="genRatio" class="ratio-value">—<small>RR : Rr : rr</small></div></div>
         <div id="genApprox" class="ratio-explainer"></div><div id="genBars" class="bars"></div>
       </section>
       <section class="stat-card">
-        <div class="stat-title"><h3>Frequência fenotípica</h3><span class="expected-pill">Esperado: 3 azuis : 1 amarelo</span></div>
+        <div class="stat-title"><h3>Frequência fenotípica</h3><span id="phenExpected" class="expected-pill">Esperado: 3 azuis : 1 amarelo</span></div>
         <div class="ratio-display"><div class="ratio-label">Frequência normalizada<br><span style="font-size:.86em;font-weight:700;letter-spacing:.02em">(contagens entre parênteses)</span></div><div id="phenRatio" class="ratio-value">—<small>azul : amarelo</small></div></div>
         <div id="phenApprox" class="ratio-explainer"></div><div id="phenBars" class="bars"></div>
       </section>
@@ -84,11 +87,38 @@ button{font:inherit}
 <script>
 const TOTAL_SALA=10, TOTAL_MASSA=1000;
 const $=id=>document.getElementById(id);
+let modoAtual='sala';
+
+const CROSS_CONFIGS={
+  'Rr-Rr':{
+    p1:'Rr',p2:'Rr',genExpected:[1,2,1],phenExpected:[3,1],
+    generation:'Híbridos F1 cruzados',offspring:'Geração F2',
+    concept:'Cruzamento entre híbridos: cada parental Rr forma gametas R e r, permitindo observar segregação e variabilidade na geração F2.'
+  },
+  'RR-rr':{
+    p1:'RR',p2:'rr',genExpected:[0,1,0],phenExpected:[1,0],
+    generation:'Parentais puros (P)',offspring:'Híbridos F1',
+    concept:'Cruzamento clássico de linhagens puras: RR produz apenas gametas R e rr produz apenas gametas r; todos os descendentes F1 são híbridos Rr.'
+  },
+  'RR-RR':{
+    p1:'RR',p2:'RR',genExpected:[1,0,0],phenExpected:[1,0],
+    generation:'Linhagens puras',offspring:'Descendência uniforme',
+    concept:'Dois parentais homozigotos dominantes produzem somente gametas R; toda a descendência será RR e apresentará grãos azuis.'
+  },
+  'rr-rr':{
+    p1:'rr',p2:'rr',genExpected:[0,0,1],phenExpected:[0,1],
+    generation:'Linhagens puras',offspring:'Descendência uniforme',
+    concept:'Dois parentais homozigotos recessivos produzem somente gametas r; toda a descendência será rr e apresentará grãos amarelos.'
+  }
+};
+
+function currentConfig(){return CROSS_CONFIGS[$('crossSelect').value]}
+function gametaDo(genotipo){return genotipo[Math.floor(Math.random()*2)]}
 function sortearGenotipo(){
-  const g1=Math.random()<.5?'R':'r', g2=Math.random()<.5?'R':'r';
-  if(g1==='R'&&g2==='R') return {g1,g2,gen:'RR',phen:'azul'};
-  if(g1==='r'&&g2==='r') return {g1,g2,gen:'rr',phen:'amarelo'};
-  return {g1,g2,gen:'Rr',phen:'azul'};
+  const cfg=currentConfig();
+  const g1=gametaDo(cfg.p1), g2=gametaDo(cfg.p2);
+  const gen=(g1==='R'&&g2==='R')?'RR':(g1==='r'&&g2==='r')?'rr':'Rr';
+  return {g1,g2,gen,phen:gen==='rr'?'amarelo':'azul'};
 }
 function formatNumber(n){
   if(Number.isInteger(n)) return String(n);
@@ -101,27 +131,40 @@ function normalizedRatio(values){
   return values.map(v=>v===0?'0':formatNumber(v/base)).join(' : ');
 }
 function pctRounded(value,total){return total?Math.round(value/total*100):0}
+function expectedText(values,labels){return values.map((v,i)=>`${v} ${labels[i]}`).join(' : ')}
 function bar(label,value,total,color,expectedParts){
   const pct=total?value/total*100:0;
-  return `<div class="bar-row"><div class="bar-label" title="${label}">${label}</div><div class="track"><div class="fill ${color}" style="width:${pct}%"></div></div><div class="bar-data"><strong>${value} descendentes · ${pctRounded(value,total)}%</strong><span>esperado: ${expectedParts} parte${expectedParts>1?'s':''}</span></div></div>`;
+  return `<div class="bar-row"><div class="bar-label" title="${label}">${label}</div><div class="track"><div class="fill ${color}" style="width:${pct}%"></div></div><div class="bar-data"><strong>${value} descendentes · ${pctRounded(value,total)}%</strong><span>esperado: ${expectedParts} parte${expectedParts===1?'':'s'}</span></div></div>`;
+}
+function updateCrossContext(){
+  const cfg=currentConfig();
+  $('generationLabel').textContent=cfg.generation;
+  $('offspringLabel').textContent=cfg.offspring;
+  document.querySelector('.concept').innerHTML=`<strong>Modelo didático simplificado:</strong> ${cfg.concept}`;
+  $('genExpected').textContent=`Esperado: ${expectedText(cfg.genExpected,['RR','Rr','rr'])}`;
+  $('phenExpected').textContent=`Esperado: ${expectedText(cfg.phenExpected,['azuis','amarelos'])}`;
 }
 function updateResults(c,total){
+  const cfg=currentConfig();
   const genRaw=`${c.RR} : ${c.Rr} : ${c.rr}`;
   const phenRaw=`${c.azul} : ${c.amarelo}`;
   const genNorm=normalizedRatio([c.RR,c.Rr,c.rr]);
   const phenNorm=normalizedRatio([c.azul,c.amarelo]);
+  const genExpected=cfg.genExpected.join(' : '), phenExpected=cfg.phenExpected.join(' : ');
   $('genRatio').innerHTML=`${genNorm} <span class="raw-ratio">(${genRaw})</span><small>RR : Rr : rr</small>`;
   $('phenRatio').innerHTML=`${phenNorm} <span class="raw-ratio">(${phenRaw})</span><small>azul : amarelo</small>`;
-  $('genApprox').textContent=`Valor principal: frequência genotípica normalizada pela menor categoria. Entre parênteses: contagens observadas. Compare com o esperado 1 : 2 : 1.`;
-  $('phenApprox').textContent=`Valor principal: frequência fenotípica normalizada pela menor categoria. Entre parênteses: contagens observadas. Compare com o esperado 3 : 1.`;
-  $('genBars').innerHTML=bar('Homozigoto dominante (RR)',c.RR,total,'blue',1)+bar('Heterozigoto (Rr)',c.Rr,total,'mix',2)+bar('Homozigoto recessivo (rr)',c.rr,total,'yellow',1);
-  $('phenBars').innerHTML=bar('Fenótipo dominante — azul (R_)',c.azul,total,'blue',3)+bar('Fenótipo recessivo — amarelo (rr)',c.amarelo,total,'yellow',1);
+  $('genApprox').textContent=`Frequência normalizada pela menor categoria positiva; contagens entre parênteses. Compare com o esperado ${genExpected}.`;
+  $('phenApprox').textContent=`Frequência normalizada pela menor categoria positiva; contagens entre parênteses. Compare com o esperado ${phenExpected}.`;
+  $('genBars').innerHTML=bar('Homozigoto dominante (RR)',c.RR,total,'blue',cfg.genExpected[0])+bar('Heterozigoto (Rr)',c.Rr,total,'mix',cfg.genExpected[1])+bar('Homozigoto recessivo (rr)',c.rr,total,'yellow',cfg.genExpected[2]);
+  $('phenBars').innerHTML=bar('Fenótipo dominante — azul (R_)',c.azul,total,'blue',cfg.phenExpected[0])+bar('Fenótipo recessivo — amarelo (rr)',c.amarelo,total,'yellow',cfg.phenExpected[1]);
 }
 function emptyCounts(){return {RR:0,Rr:0,rr:0,azul:0,amarelo:0}}
-function setActive(mode){$('btnSala').classList.toggle('active',mode==='sala');$('btnMassa').classList.toggle('active',mode==='massa')}
+function setActive(mode){modoAtual=mode;$('btnSala').classList.toggle('active',mode==='sala');$('btnMassa').classList.toggle('active',mode==='massa')}
 function simulateClass(){
-  setActive('sala'); $('simulationTitle').textContent='Amostra da turma — 10 descendentes';
-  $('sampleNote').textContent='Amostras pequenas oscilam mais: o acaso tem maior efeito.';
+  updateCrossContext(); setActive('sala');
+  const cfg=currentConfig();
+  $('simulationTitle').textContent=`Amostra da turma — 10 descendentes (${cfg.p1} × ${cfg.p2})`;
+  $('sampleNote').textContent=cfg.p1==='Rr'&&cfg.p2==='Rr'?'Amostras pequenas oscilam mais: o acaso tem maior efeito.':'Cruzamentos com parentais homozigotos produzem descendência geneticamente uniforme neste modelo.';
   const c=emptyCounts(); let html='<div class="grid-students">';
   for(let i=1;i<=TOTAL_SALA;i++){
     const x=sortearGenotipo(); c[x.gen]++; c[x.phen]++;
@@ -130,8 +173,10 @@ function simulateClass(){
   $('simulationArea').innerHTML=html+'</div>'; updateResults(c,TOTAL_SALA);
 }
 function simulateMass(){
-  setActive('massa'); $('simulationTitle').textContent='Escala experimental — 1.000 descendentes';
-  $('sampleNote').textContent='Amostras grandes tendem a se aproximar das proporções previstas pelo modelo.';
+  updateCrossContext(); setActive('massa');
+  const cfg=currentConfig();
+  $('simulationTitle').textContent=`Escala experimental — 1.000 descendentes (${cfg.p1} × ${cfg.p2})`;
+  $('sampleNote').textContent=cfg.p1==='Rr'&&cfg.p2==='Rr'?'Amostras grandes tendem a se aproximar das proporções previstas pelo modelo.':'Neste cruzamento, a previsão teórica é uniforme e independe do tamanho da amostra.';
   const c=emptyCounts(); let html='<div class="heatmap" aria-label="Mapa de 1.000 descendentes">';
   for(let i=0;i<TOTAL_MASSA;i++){
     const x=sortearGenotipo(); c[x.gen]++; c[x.phen]++;
@@ -139,7 +184,10 @@ function simulateMass(){
   }
   $('simulationArea').innerHTML=html+'</div>'; updateResults(c,TOTAL_MASSA);
 }
-$('btnSala').addEventListener('click',simulateClass); $('btnMassa').addEventListener('click',simulateMass); simulateClass();
+$('btnSala').addEventListener('click',simulateClass);
+$('btnMassa').addEventListener('click',simulateMass);
+$('crossSelect').addEventListener('change',()=>modoAtual==='massa'?simulateMass():simulateClass());
+simulateClass();
 </script>
 </body>
 </html>
