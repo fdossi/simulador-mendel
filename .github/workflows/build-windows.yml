@@ -5,7 +5,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'app/**'
+      - 'index.html'
       - 'main.js'
       - 'package.json'
       - '.github/workflows/build-windows.yml'
@@ -21,8 +21,7 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
+          node-version: 24
 
       - name: Instalar dependências
         run: npm install
