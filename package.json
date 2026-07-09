@@ -1,0 +1,35 @@
+{
+  "name": "simulador-primeira-lei-mendel",
+  "version": "1.0.0",
+  "description": "Simulador educacional da Primeira Lei de Mendel com milho azul e amarelo.",
+  "main": "main.js",
+  "author": "Fabio Dossi",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis portable"
+  },
+  "devDependencies": {
+    "electron": "^35.7.5",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "br.edu.simuladormendel",
+    "productName": "Simulador da Primeira Lei de Mendel",
+    "files": [
+      "main.js",
+      "app/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": ["nsis", "portable"],
+      "artifactName": "Simulador-Mendel-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}
