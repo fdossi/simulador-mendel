@@ -50,7 +50,7 @@ button{font:inherit}
       <div class="title-wrap"><h1>Simulador da 1ª Lei de Mendel</h1><p>Modelo simplificado: herança da cor dos grãos em milho hipotético</p></div>
     </div>
     <div class="cross-badge">
-      <div class="cross-select-wrap"><label for="crossSelect">Cruzamento</label><select id="crossSelect" class="cross-select" aria-label="Selecionar cruzamento parental"><option value="Aa-Aa" selected>Aa × Aa</option><option value="AA-aa">AA × aa</option><option value="AA-AA">AA × AA</option><option value="aa-aa">aa × aa</option></select></div>
+      <div class="cross-select-wrap"><label for="crossSelect">Cruzamento</label><select id="crossSelect" class="cross-select" aria-label="Selecionar cruzamento parental"><option value="Aa-Aa" selected>Aa × Aa</option><option value="AA-aa">AA × aa</option><option value="AA-Aa">AA × Aa</option><option value="Aa-aa">Aa × aa</option><option value="AA-AA">AA × AA</option><option value="aa-aa">aa × aa</option></select></div>
       <div aria-hidden="true">→</div><div><span id="generationLabel">Híbridos F1 cruzados</span><strong id="offspringLabel">Geração F2</strong></div>
     </div>
   </header>
@@ -99,6 +99,16 @@ const CROSS_CONFIGS={
     p1:'AA',p2:'aa',genExpected:[0,1,0],phenExpected:[1,0],
     generation:'Parentais puros (P)',offspring:'Híbridos F1',
     concept:'Cruzamento clássico de linhagens puras: AA produz apenas gametas A e aa produz apenas gametas a; todos os descendentes F1 são híbridos Aa.'
+  },
+  'AA-Aa':{
+    p1:'AA',p2:'Aa',genExpected:[1,1,0],phenExpected:[1,0],
+    generation:'Homozigoto × híbrido',offspring:'Descendência segregante',
+    concept:'O parental AA produz apenas gametas A, enquanto Aa produz gametas A e a. Espera-se metade AA e metade Aa; todos apresentam o fenótipo dominante azul.'
+  },
+  'Aa-aa':{
+    p1:'Aa',p2:'aa',genExpected:[0,1,1],phenExpected:[1,1],
+    generation:'Cruzamento-teste',offspring:'Descendência segregante',
+    concept:'O parental Aa produz gametas A e a, enquanto aa produz apenas gametas a. Espera-se metade Aa azul e metade aa amarela, na proporção fenotípica 1 : 1.'
   },
   'AA-AA':{
     p1:'AA',p2:'AA',genExpected:[1,0,0],phenExpected:[1,0],
@@ -160,11 +170,12 @@ function updateResults(c,total){
 }
 function emptyCounts(){return {AA:0,Aa:0,aa:0,azul:0,amarelo:0}}
 function setActive(mode){modoAtual=mode;$('btnSala').classList.toggle('active',mode==='sala');$('btnMassa').classList.toggle('active',mode==='massa')}
+function hasSegregation(cfg){return cfg.genExpected.filter(v=>v>0).length>1}
 function simulateClass(){
   updateCrossContext(); setActive('sala');
   const cfg=currentConfig();
   $('simulationTitle').textContent=`Amostra da turma — 10 descendentes (${cfg.p1} × ${cfg.p2})`;
-  $('sampleNote').textContent=cfg.p1==='Aa'&&cfg.p2==='Aa'?'Amostras pequenas oscilam mais: o acaso tem maior efeito.':'Cruzamentos com parentais homozigotos produzem descendência geneticamente uniforme neste modelo.';
+  $('sampleNote').textContent=hasSegregation(cfg)?'Amostras pequenas podem se afastar da proporção esperada devido ao acaso.':'Neste modelo, o cruzamento produz descendência geneticamente uniforme.';
   const c=emptyCounts(); let html='<div class="grid-students">';
   for(let i=1;i<=TOTAL_SALA;i++){
     const x=sortearGenotipo(); c[x.gen]++; c[x.phen]++;
@@ -176,7 +187,7 @@ function simulateMass(){
   updateCrossContext(); setActive('massa');
   const cfg=currentConfig();
   $('simulationTitle').textContent=`Escala experimental — 1.000 descendentes (${cfg.p1} × ${cfg.p2})`;
-  $('sampleNote').textContent=cfg.p1==='Aa'&&cfg.p2==='Aa'?'Amostras grandes tendem a se aproximar das proporções previstas pelo modelo.':'Neste cruzamento, a previsão teórica é uniforme e independe do tamanho da amostra.';
+  $('sampleNote').textContent=hasSegregation(cfg)?'Amostras grandes tendem a se aproximar das proporções previstas pelo modelo.':'Neste cruzamento, a previsão teórica é uniforme e independe do tamanho da amostra.';
   const c=emptyCounts(); let html='<div class="heatmap" aria-label="Mapa de 1.000 descendentes">';
   for(let i=0;i<TOTAL_MASSA;i++){
     const x=sortearGenotipo(); c[x.gen]++; c[x.phen]++;
