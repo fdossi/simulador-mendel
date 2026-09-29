@@ -10,7 +10,7 @@
     "dist": "electron-builder --win nsis portable --publish never"
   },
   "devDependencies": {
-    "electron": "^35.7.5",
+    "electron": "^44.4.5",
     "electron-builder": "^26.0.12"
   },
   "build": {
@@ -22,7 +22,10 @@
       "package.json"
     ],
     "win": {
-      "target": ["nsis", "portable"]
+      "target": [
+        "nsis",
+        "portable"
+      ]
     },
     "nsis": {
       "oneClick": false,
@@ -34,5 +37,8 @@
     "portable": {
       "artifactName": "Simulador-Mendel-Portatil-${version}-${arch}.${ext}"
     }
+  },
+  "allowScripts": {
+    "electron-winstaller@5.4.0": true
   }
 }
